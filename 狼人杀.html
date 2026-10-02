@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>6人狼人杀发牌</title>
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #1e1e2f;
+    color: #fff;
+    margin: 0;
+    padding: 16px;
+    min-height: 100vh;
+  }
+  h1 {
+    font-size: 20px;
+    text-align: center;
+    margin: 8px 0 4px;
+  }
+  .tip {
+    text-align: center;
+    color: #999;
+    font-size: 13px;
+    margin-bottom: 16px;
+  }
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 16px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(135deg, #6a5acd, #8a2be2);
+    border: none;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    cursor: pointer;
+  }
+  .btn:active { opacity: 0.8; }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 18px;
+    background: #2a2a40;
+    border-radius: 10px;
+    overflow: hidden;
+    font-size: 17px;
+  }
+  th, td {
+    padding: 14px 8px;
+    text-align: center;
+    border-bottom: 1px solid #3a3a55;
+  }
+  th {
+    background: #3a3a5a;
+    font-size: 15px;
+    color: #ccc;
+  }
+  tr:last-child td { border-bottom: none; }
+  .wolf { color: #ff6b6b; font-weight: bold; }
+  .seer { color: #4dabf7; font-weight: bold; }
+  .witch { color: #da77f2; font-weight: bold; }
+  .villager { color: #69db7c; font-weight: bold; }
+  .game-title {
+    font-size: 13px;
+    color: #777;
+    margin-bottom: 6px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<h1>🐺 6人狼人杀发牌</h1>
+<p class="tip">点下方按钮，随机生成一局身份</p>
+
+<button class="btn" onclick="generateGame()">🎲 发牌</button>
+<div id="output"></div>
+
+<script>
+  const roles = [
+    "狼人", "狼人",
+    "预言家",
+    "女巫",
+    "平民", "平民"
+  ];
+
+  let gameCount = 0;
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function getClass(role) {
+    if (role === "狼人") return "wolf";
+    if (role === "预言家") return "seer";
+    if (role === "女巫") return "witch";
+    return "villager";
+  }
+
+  function generateGame() {
+    gameCount++;
+    const shuffled = shuffle(roles);
+
+    let html = `<div class="game-title">第 ${gameCount} 局</div>
+    <table>
+      <tr><th>玩家</th><th>身份</th></tr>`;
+
+    shuffled.forEach((role, index) => {
+      html += `<tr>
+        <td>${index + 1} 号</td>
+        <td class="${getClass(role)}">${role}</td>
+      </tr>`;
+    });
+    html += `</table>`;
+
+    document.getElementById("output").insertAdjacentHTML("afterbegin", html);
+  }
+</script>
+
+</body>
+</html>
